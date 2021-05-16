@@ -2,6 +2,7 @@ const express = require('express');
 const data = require('./db/db.json');
 const path = require('path');
 const fs = require('fs');
+const { v4: uuidv4 } = require('uuid');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -17,24 +18,28 @@ app.get('/api/notes', (req, res) => {
 
 // Post route for new note
 app.post('/api/notes', (req, res) => {
-  const newNote = req.body;
-  const id = uniqid();
-  newNote.id = id;
-  console.log(newNote);
-  fs.writeFileSync(
-    path.join(__dirname, './db/db.json'), JSON.stringify({newNote})
-  )
-  res.json(newNote);
+  const note = req.body;
+  note.id = uuidv4();
+  fs.readFile('./db/db.json', (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      notes = JSON.parse(data);
+      notes.push(note);
+      fs.writeFileSync('./db/db.json', JSON.stringify(notes), null, 2);
+    }
+    res.json(notes)
+  })
 });
 
 // serve notes.html
 app.get('/notes', (req, res) => {
-  res.sendFile(path.join(__dirname, '/public/notes.html'));
+  res.sendFile(path.join(__dirname, './public/notes.html'));
 });
 
 // serve index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/public/index.html'));
+  res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
 
