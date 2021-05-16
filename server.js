@@ -1,6 +1,7 @@
 const express = require('express');
 const data = require('./db/db.json');
 const path = require('path');
+const fs = require('fs');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -17,19 +18,23 @@ app.get('/api/notes', (req, res) => {
 // Post route for new note
 app.post('/api/notes', (req, res) => {
   const newNote = req.body;
-  req.body.id = data.length.toString();
+  const id = uniqid();
+  newNote.id = id;
   console.log(newNote);
+  fs.writeFileSync(
+    path.join(__dirname, './db/db.json'), JSON.stringify({newNote})
+  )
   res.json(newNote);
 });
 
 // serve notes.html
 app.get('/notes', (req, res) => {
-  res.sendFile(path.join(__dirname, './public/notes.html'));
+  res.sendFile(path.join(__dirname, '/public/notes.html'));
 });
 
 // serve index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, './public/index.html'));
+  res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
 
