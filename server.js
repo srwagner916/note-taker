@@ -13,22 +13,22 @@ app.use(express.json());
 
 // get data from db.
 app.get('/api/notes', (req, res) => {
-  res.json(data);
+  return res.json(data);
 });
 
 // Post route for new note
 app.post('/api/notes', (req, res) => {
+
   const note = req.body;
   note.id = uuidv4();
-  fs.readFile('./db/db.json', (err, data) => {
+  res.json(note);
+
+  data.push(note);
+  fs.writeFile(path.join(__dirname, './db/db.json'), JSON.stringify(data), (err, result) => {
     if (err) {
       console.log(err);
-    } else {
-      notes = JSON.parse(data);
-      notes.push(note);
-      fs.writeFileSync('./db/db.json', JSON.stringify(notes), null, 2);
     }
-    res.json(notes)
+    return;
   })
 });
 
@@ -41,7 +41,5 @@ app.get('/notes', (req, res) => {
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './public/index.html'));
 });
-
-
 
 app.listen(PORT, () => console.log(`API server now on port ${PORT}!!`));
