@@ -19,15 +19,18 @@ router.get('/notes', (req, res) => {
 
 // Post route for new note
 router.post('/notes', (req, res) => {
+  // read db.json and set it to a variable
+  notes = JSON.parse(fs.readFileSync(path.join(__dirname, '../db/db.json'), 'utf8'));
+  
   // note variable = new note body
   const note = req.body;
   // set's a unique id to note
   note.id = uuidv4();
   res.json(note);
   // push the new note to db
-  data.push(note);
+  notes.push(note);
   // write the new note to db.json
-  fs.writeFile(path.join(__dirname, '../db/db.json'), JSON.stringify(data), (err, result) => {
+  fs.writeFile(path.join(__dirname, '../db/db.json'), JSON.stringify(notes), (err, result) => {
     if (err) {
       console.log(err);
     }
