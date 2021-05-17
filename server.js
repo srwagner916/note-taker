@@ -13,16 +13,22 @@ app.use(express.json());
 
 // get data from db.
 app.get('/api/notes', (req, res) => {
-  return res.json(data);
+  fs.readFile(path.join(__dirname, './db/db.json'), (err, result) => {
+    if (err){
+      console.log(err);
+    }
+    let data = JSON.parse(result);
+    res.json(data);
+  })
 });
 
 // Post route for new note
 app.post('/api/notes', (req, res) => {
-
+  
   const note = req.body;
   note.id = uuidv4();
   res.json(note);
-
+  
   data.push(note);
   fs.writeFile(path.join(__dirname, './db/db.json'), JSON.stringify(data), (err, result) => {
     if (err) {
@@ -34,9 +40,12 @@ app.post('/api/notes', (req, res) => {
 
 app.delete('/api/notes/:id', (req, res) => {
   const { id: id } = req.params;
-  notes = JSON.parse(fs.readFileSync(path.join(__dirname, './db/db.json'), 'utf8'))
+  notes = JSON.parse(fs.readFileSync(path.join(__dirname, './db/db.json'), 'utf8'));
+  const deletedTask = notes.find(note => note.id == id);
   updatedNotesArr = notes.filter(note => note.id != id);
-  console.log(updatedNotesArr);
+  res.json(updatedNotesArr);
+  console.log(deletedTask);
+  fs.writeFileSync(path.join(__dirname, './db/db.json'), JSON.stringify(updatedNotesArr));
 });
 
 // serve notes.html
