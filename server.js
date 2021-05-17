@@ -45,7 +45,12 @@ app.delete('/api/notes/:id', (req, res) => {
   updatedNotesArr = notes.filter(note => note.id != id);
   res.json(updatedNotesArr);
   console.log(deletedTask);
-  fs.writeFileSync(path.join(__dirname, './db/db.json'), JSON.stringify(updatedNotesArr));
+  fs.writeFileSync(path.join(__dirname, './db/db.json'), JSON.stringify(updatedNotesArr), (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    return;
+  });
 });
 
 // serve notes.html
