@@ -10,7 +10,7 @@ The purpose of this application is to provide the user with simple reminders and
   * [License](#License)
   * [Contact](#Questions)
 ## Installation
-To install this application the user must download the code.  They will then need to install the dependencies.  To install express run the command 'npm i express'.  To install uuid for generating unique note ids, run the command 'npm i uuid'.  The application is deployed to Heroku.  It can be find with a link here 
+To install this application the user must download the code.  They will then need to install the dependencies.  To install express run the command 'npm i express'.  To install uuid for generating unique note ids, run the command 'npm i uuid'.  The application is deployed to Heroku.  It can be find with a link here: [deployed Heroku app.](https://young-everglades-94941.herokuapp.com/)
 ## Usage
 When on the landing page, click 'get started' to be brought to the notes page.  On the notes page, enter the title of your note in the 'Note Title' section.  Then type the text of your note in the 'Note Text' section.  When you are satisfied with your note.  Click on the save icon in the top right side of the page.  That note will now populate the list on the left hand side.  To create another note, click on the plus sign on the top right hand side of the page.  To view a saved note, click on the note you would like to view in the list of saved notes and it will display on the page.  To delete a note, click on the red trash icon next to the note in the saved notes list and it will be removed from the page.
 ### No Notes
